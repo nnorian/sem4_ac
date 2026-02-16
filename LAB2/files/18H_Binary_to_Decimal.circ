@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.7.1" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <circuit name="main">
+    <a name="circuit" val="main"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif plain 12"/>
+    <wire from="(120,200)" to="(220,200)"/>
+    <wire from="(220,200)" to="(220,240)"/>
+    <wire from="(220,240)" to="(280,240)"/>
+    <wire from="(280,240)" to="(280,300)"/>
+    <wire from="(220,200)" to="(320,200)"/>
+    <wire from="(320,200)" to="(320,240)"/>
+    <wire from="(380,240)" to="(380,300)"/>
+    <wire from="(320,240)" to="(380,240)"/>
+    <wire from="(220,200)" to="(420,200)"/>
+    <wire from="(420,200)" to="(420,240)"/>
+    <wire from="(420,240)" to="(480,240)"/>
+    <wire from="(480,240)" to="(480,300)"/>
+    <comp lib="0" loc="(120,200)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Input [8-bit]"/>
+      <a name="width" val="8"/>
+    </comp>
+    <comp lib="5" loc="(280,300)" name="Hex Digit Display">
+      <a name="label" val="Hundreds"/>
+    </comp>
+    <comp lib="5" loc="(380,300)" name="Hex Digit Display">
+      <a name="label" val="Tens"/>
+    </comp>
+    <comp lib="5" loc="(480,300)" name="Hex Digit Display">
+      <a name="label" val="Ones"/>
+    </comp>
+    <comp lib="6" loc="(350,130)" name="Text">
+      <a name="text" val="8-bit Binary to Decimal Display"/>
+    </comp>
+    <comp lib="6" loc="(350,150)" name="Text">
+      <a name="text" val="(Uses BCD conversion via splitters)"/>
+    </comp>
+  </circuit>
+</project>
