@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.16.0" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options><a name="gateUndefined" val="ignore"/><a name="simlimit" val="1000"/></options>
+  <circuit name="main">
+    <a name="circuit" val="main"/><a name="clabel" val=""/><a name="clabelup" val="east"/><a name="clabelfont" val="SansSerif bold 16"/>
+    <comp lib="6" loc="(500,20)" name="Text"><a name="text" val="Exercise 6H: 4-to-16 Decoder"/></comp>
+    <comp lib="6" loc="(500,38)" name="Text"><a name="text" val="One-hot: exactly one Y is high per input"/></comp>
+    <comp lib="0" loc="(50,170)" name="Pin"><a name="tristate" val="false"/><a name="label" val="A0"/></comp>
+    <wire from="(50,170)" to="(120,170)"/>
+    <comp lib="1" loc="(150,170)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(50,170)" to="(95,170)"/>
+    <wire from="(150,170)" to="(195,170)"/>
+    <comp lib="0" loc="(50,140)" name="Pin"><a name="tristate" val="false"/><a name="label" val="A1"/></comp>
+    <wire from="(50,140)" to="(120,140)"/>
+    <comp lib="1" loc="(150,140)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(50,140)" to="(85,140)"/>
+    <wire from="(150,140)" to="(185,140)"/>
+    <comp lib="0" loc="(50,110)" name="Pin"><a name="tristate" val="false"/><a name="label" val="A2"/></comp>
+    <wire from="(50,110)" to="(120,110)"/>
+    <comp lib="1" loc="(150,110)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(50,110)" to="(75,110)"/>
+    <wire from="(150,110)" to="(175,110)"/>
+    <comp lib="0" loc="(50,80)" name="Pin"><a name="tristate" val="false"/><a name="label" val="A3"/></comp>
+    <wire from="(50,80)" to="(120,80)"/>
+    <comp lib="1" loc="(150,80)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(50,80)" to="(65,80)"/>
+    <wire from="(150,80)" to="(165,80)"/>
+    <comp lib="1" loc="(390,200)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(165,185)" to="(340,185)"/>
+    <wire from="(175,195)" to="(340,195)"/>
+    <wire from="(185,205)" to="(340,205)"/>
+    <wire from="(195,215)" to="(340,215)"/>
+    <comp lib="0" loc="(500,200)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y0"/></comp>
+    <wire from="(390,200)" to="(500,200)"/>
+    <comp lib="1" loc="(390,260)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(165,245)" to="(340,245)"/>
+    <wire from="(175,255)" to="(340,255)"/>
+    <wire from="(185,265)" to="(340,265)"/>
+    <wire from="(95,275)" to="(340,275)"/>
+    <comp lib="0" loc="(500,260)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y1"/></comp>
+    <wire from="(390,260)" to="(500,260)"/>
+    <comp lib="1" loc="(390,320)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(165,305)" to="(340,305)"/>
+    <wire from="(175,315)" to="(340,315)"/>
+    <wire from="(85,325)" to="(340,325)"/>
+    <wire from="(195,335)" to="(340,335)"/>
+    <comp lib="0" loc="(500,320)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y2"/></comp>
+    <wire from="(390,320)" to="(500,320)"/>
+    <comp lib="1" loc="(390,380)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(165,365)" to="(340,365)"/>
+    <wire from="(175,375)" to="(340,375)"/>
+    <wire from="(85,385)" to="(340,385)"/>
+    <wire from="(95,395)" to="(340,395)"/>
+    <comp lib="0" loc="(500,380)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y3"/></comp>
+    <wire from="(390,380)" to="(500,380)"/>
+    <comp lib="1" loc="(390,440)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(165,425)" to="(340,425)"/>
+    <wire from="(75,435)" to="(340,435)"/>
+    <wire from="(185,445)" to="(340,445)"/>
+    <wire from="(195,455)" to="(340,455)"/>
+    <comp lib="0" loc="(500,440)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y4"/></comp>
+    <wire from="(390,440)" to="(500,440)"/>
+    <comp lib="1" loc="(390,500)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(165,485)" to="(340,485)"/>
+    <wire from="(75,495)" to="(340,495)"/>
+    <wire from="(185,505)" to="(340,505)"/>
+    <wire from="(95,515)" to="(340,515)"/>
+    <comp lib="0" loc="(500,500)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y5"/></comp>
+    <wire from="(390,500)" to="(500,500)"/>
+    <comp lib="1" loc="(390,560)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(165,545)" to="(340,545)"/>
+    <wire from="(75,555)" to="(340,555)"/>
+    <wire from="(85,565)" to="(340,565)"/>
+    <wire from="(195,575)" to="(340,575)"/>
+    <comp lib="0" loc="(500,560)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y6"/></comp>
+    <wire from="(390,560)" to="(500,560)"/>
+    <comp lib="1" loc="(390,620)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(165,605)" to="(340,605)"/>
+    <wire from="(75,615)" to="(340,615)"/>
+    <wire from="(85,625)" to="(340,625)"/>
+    <wire from="(95,635)" to="(340,635)"/>
+    <comp lib="0" loc="(500,620)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y7"/></comp>
+    <wire from="(390,620)" to="(500,620)"/>
+    <comp lib="1" loc="(390,680)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(65,665)" to="(340,665)"/>
+    <wire from="(175,675)" to="(340,675)"/>
+    <wire from="(185,685)" to="(340,685)"/>
+    <wire from="(195,695)" to="(340,695)"/>
+    <comp lib="0" loc="(500,680)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y8"/></comp>
+    <wire from="(390,680)" to="(500,680)"/>
+    <comp lib="1" loc="(390,740)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(65,725)" to="(340,725)"/>
+    <wire from="(175,735)" to="(340,735)"/>
+    <wire from="(185,745)" to="(340,745)"/>
+    <wire from="(95,755)" to="(340,755)"/>
+    <comp lib="0" loc="(500,740)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y9"/></comp>
+    <wire from="(390,740)" to="(500,740)"/>
+    <comp lib="1" loc="(390,800)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(65,785)" to="(340,785)"/>
+    <wire from="(175,795)" to="(340,795)"/>
+    <wire from="(85,805)" to="(340,805)"/>
+    <wire from="(195,815)" to="(340,815)"/>
+    <comp lib="0" loc="(500,800)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y10"/></comp>
+    <wire from="(390,800)" to="(500,800)"/>
+    <comp lib="1" loc="(390,860)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(65,845)" to="(340,845)"/>
+    <wire from="(175,855)" to="(340,855)"/>
+    <wire from="(85,865)" to="(340,865)"/>
+    <wire from="(95,875)" to="(340,875)"/>
+    <comp lib="0" loc="(500,860)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y11"/></comp>
+    <wire from="(390,860)" to="(500,860)"/>
+    <comp lib="1" loc="(390,920)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(65,905)" to="(340,905)"/>
+    <wire from="(75,915)" to="(340,915)"/>
+    <wire from="(185,925)" to="(340,925)"/>
+    <wire from="(195,935)" to="(340,935)"/>
+    <comp lib="0" loc="(500,920)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y12"/></comp>
+    <wire from="(390,920)" to="(500,920)"/>
+    <comp lib="1" loc="(390,980)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(65,965)" to="(340,965)"/>
+    <wire from="(75,975)" to="(340,975)"/>
+    <wire from="(185,985)" to="(340,985)"/>
+    <wire from="(95,995)" to="(340,995)"/>
+    <comp lib="0" loc="(500,980)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y13"/></comp>
+    <wire from="(390,980)" to="(500,980)"/>
+    <comp lib="1" loc="(390,1040)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(65,1025)" to="(340,1025)"/>
+    <wire from="(75,1035)" to="(340,1035)"/>
+    <wire from="(85,1045)" to="(340,1045)"/>
+    <wire from="(195,1055)" to="(340,1055)"/>
+    <comp lib="0" loc="(500,1040)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y14"/></comp>
+    <wire from="(390,1040)" to="(500,1040)"/>
+    <comp lib="1" loc="(390,1100)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <wire from="(65,1085)" to="(340,1085)"/>
+    <wire from="(75,1095)" to="(340,1095)"/>
+    <wire from="(85,1105)" to="(340,1105)"/>
+    <wire from="(95,1115)" to="(340,1115)"/>
+    <comp lib="0" loc="(500,1100)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y15"/></comp>
+    <wire from="(390,1100)" to="(500,1100)"/>
+    <wire from="(95,170)" to="(95,1115)"/>
+    <wire from="(195,170)" to="(195,1055)"/>
+    <wire from="(85,140)" to="(85,1105)"/>
+    <wire from="(185,140)" to="(185,985)"/>
+    <wire from="(75,110)" to="(75,1095)"/>
+    <wire from="(175,110)" to="(175,855)"/>
+    <wire from="(65,80)" to="(65,1085)"/>
+    <wire from="(165,80)" to="(165,605)"/>
+  </circuit>
+</project>

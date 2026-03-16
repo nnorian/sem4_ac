@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.7.1" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <circuit name="main">
+    <a name="circuit" val="main"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif bold 16"/>
+    <comp lib="6" loc="(360,40)" name="Text">
+      <a name="text" val="Exercise 9M: 2-to-1 Multiplexer"/>
+    </comp>
+    <comp lib="6" loc="(360,60)" name="Text">
+      <a name="text" val="Y = I0 * NOT(Sel) + I1 * Sel"/>
+    </comp>
+    <comp lib="0" loc="(80,180)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="I0"/>
+    </comp>
+    <comp lib="0" loc="(80,340)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="I1"/>
+    </comp>
+    <comp lib="0" loc="(80,500)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Sel"/>
+    </comp>
+    <comp lib="1" loc="(200,500)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(80,500)" to="(170,500)"/>
+    <comp lib="1" loc="(360,190)" name="AND Gate"><a name="size" val="30"/></comp>
+    <comp lib="1" loc="(360,350)" name="AND Gate"><a name="size" val="30"/></comp>
+    <comp lib="1" loc="(500,270)" name="OR Gate"><a name="size" val="30"/></comp>
+    <wire from="(80,180)" to="(330,180)"/>
+    <wire from="(200,500)" to="(230,500)"/>
+    <wire from="(230,200)" to="(230,500)"/>
+    <wire from="(230,200)" to="(330,200)"/>
+    <wire from="(80,340)" to="(330,340)"/>
+    <wire from="(130,360)" to="(130,500)"/>
+    <wire from="(80,500)" to="(130,500)"/>
+    <wire from="(130,360)" to="(330,360)"/>
+    <wire from="(360,190)" to="(410,190)"/>
+    <wire from="(410,190)" to="(410,260)"/>
+    <wire from="(410,260)" to="(470,260)"/>
+    <wire from="(360,350)" to="(420,350)"/>
+    <wire from="(420,280)" to="(420,350)"/>
+    <wire from="(420,280)" to="(470,280)"/>
+    <wire from="(500,270)" to="(580,270)"/>
+    <comp lib="0" loc="(580,270)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y"/>
+    </comp>
+  </circuit>
+</project>

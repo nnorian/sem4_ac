@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.7.1" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <circuit name="main">
+    <a name="circuit" val="main"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif bold 16"/>
+    <comp lib="6" loc="(360,50)" name="Text">
+      <a name="text" val="Exercise 17H: 8-bit Two's Complement"/>
+    </comp>
+    <comp lib="6" loc="(360,70)" name="Text">
+      <a name="text" val="Result = NOT(Input) + 1 = -Input"/>
+    </comp>
+    <comp lib="0" loc="(80,230)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Input [8-bit]"/>
+      <a name="width" val="8"/>
+    </comp>
+    <wire from="(80,230)" to="(180,230)"/>
+    <comp lib="1" loc="(250,230)" name="NOT Gate">
+      <a name="size" val="30"/>
+      <a name="width" val="8"/>
+    </comp>
+    <comp lib="3" loc="(420,240)" name="Adder">
+      <a name="width" val="8"/>
+    </comp>
+    <wire from="(250,230)" to="(380,230)"/>
+    <comp lib="0" loc="(350,250)" name="Constant">
+      <a name="width" val="8"/>
+      <a name="value" val="0x1"/>
+    </comp>
+    <wire from="(350,250)" to="(380,250)"/>
+    <wire from="(420,230)" to="(560,230)"/>
+    <comp lib="0" loc="(560,230)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Result [8-bit]"/>
+      <a name="width" val="8"/>
+    </comp>
+    <wire from="(420,250)" to="(560,250)"/>
+    <comp lib="0" loc="(560,250)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Overflow"/>
+    </comp>
+    <comp lib="6" loc="(360,330)" name="Text">
+      <a name="text" val="Step 1: Invert all bits (one's complement)"/>
+    </comp>
+    <comp lib="6" loc="(360,350)" name="Text">
+      <a name="text" val="Step 2: Add 1 to get two's complement"/>
+    </comp>
+  </circuit>
+</project>

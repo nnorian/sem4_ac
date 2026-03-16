@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.16.0" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options><a name="gateUndefined" val="ignore"/><a name="simlimit" val="1000"/></options>
+  <circuit name="main">
+    <a name="circuit" val="main"/><a name="clabel" val=""/><a name="clabelup" val="east"/><a name="clabelfont" val="SansSerif bold 16"/>
+    <comp lib="6" loc="(420,30)" name="Text"><a name="text" val="Exercise 6H: 4-to-16 Decoder"/></comp>
+    <comp lib="6" loc="(420,50)" name="Text"><a name="text" val="One-hot: exactly one Y is high per input"/></comp>
+    <comp lib="0" loc="(60,120)" name="Pin"><a name="tristate" val="false"/><a name="label" val="A3"/></comp>
+    <comp lib="0" loc="(60,160)" name="Pin"><a name="tristate" val="false"/><a name="label" val="A2"/></comp>
+    <comp lib="0" loc="(60,200)" name="Pin"><a name="tristate" val="false"/><a name="label" val="A1"/></comp>
+    <comp lib="0" loc="(60,240)" name="Pin"><a name="tristate" val="false"/><a name="label" val="A0"/></comp>
+    <comp lib="1" loc="(200,120)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(60,120)" to="(170,120)"/>
+    <comp lib="0" loc="(70,120)" name="Tunnel"><a name="label" val="T3"/></comp>
+    <comp lib="0" loc="(210,120)" name="Tunnel"><a name="label" val="N3"/></comp>
+    <wire from="(200,120)" to="(210,120)"/>
+    <comp lib="1" loc="(200,160)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(60,160)" to="(170,160)"/>
+    <comp lib="0" loc="(70,160)" name="Tunnel"><a name="label" val="T2"/></comp>
+    <comp lib="0" loc="(210,160)" name="Tunnel"><a name="label" val="N2"/></comp>
+    <wire from="(200,160)" to="(210,160)"/>
+    <comp lib="1" loc="(200,200)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(60,200)" to="(170,200)"/>
+    <comp lib="0" loc="(70,200)" name="Tunnel"><a name="label" val="T1"/></comp>
+    <comp lib="0" loc="(210,200)" name="Tunnel"><a name="label" val="N1"/></comp>
+    <wire from="(200,200)" to="(210,200)"/>
+    <comp lib="1" loc="(200,240)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(60,240)" to="(170,240)"/>
+    <comp lib="0" loc="(70,240)" name="Tunnel"><a name="label" val="T0"/></comp>
+    <comp lib="0" loc="(210,240)" name="Tunnel"><a name="label" val="N0"/></comp>
+    <wire from="(200,240)" to="(210,240)"/>
+    <comp lib="1" loc="(460,100)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,85)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N0"/></comp>
+    <comp lib="0" loc="(410,95)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N1"/></comp>
+    <comp lib="0" loc="(410,105)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N2"/></comp>
+    <comp lib="0" loc="(410,115)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N3"/></comp>
+    <comp lib="0" loc="(560,100)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y0"/></comp>
+    <wire from="(460,100)" to="(560,100)"/>
+    <comp lib="1" loc="(460,140)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,125)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T0"/></comp>
+    <comp lib="0" loc="(410,135)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N1"/></comp>
+    <comp lib="0" loc="(410,145)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N2"/></comp>
+    <comp lib="0" loc="(410,155)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N3"/></comp>
+    <comp lib="0" loc="(560,140)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y1"/></comp>
+    <wire from="(460,140)" to="(560,140)"/>
+    <comp lib="1" loc="(460,180)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,165)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N0"/></comp>
+    <comp lib="0" loc="(410,175)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T1"/></comp>
+    <comp lib="0" loc="(410,185)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N2"/></comp>
+    <comp lib="0" loc="(410,195)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N3"/></comp>
+    <comp lib="0" loc="(560,180)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y2"/></comp>
+    <wire from="(460,180)" to="(560,180)"/>
+    <comp lib="1" loc="(460,220)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,205)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T0"/></comp>
+    <comp lib="0" loc="(410,215)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T1"/></comp>
+    <comp lib="0" loc="(410,225)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N2"/></comp>
+    <comp lib="0" loc="(410,235)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N3"/></comp>
+    <comp lib="0" loc="(560,220)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y3"/></comp>
+    <wire from="(460,220)" to="(560,220)"/>
+    <comp lib="1" loc="(460,260)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,245)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N0"/></comp>
+    <comp lib="0" loc="(410,255)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N1"/></comp>
+    <comp lib="0" loc="(410,265)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T2"/></comp>
+    <comp lib="0" loc="(410,275)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N3"/></comp>
+    <comp lib="0" loc="(560,260)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y4"/></comp>
+    <wire from="(460,260)" to="(560,260)"/>
+    <comp lib="1" loc="(460,300)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,285)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T0"/></comp>
+    <comp lib="0" loc="(410,295)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N1"/></comp>
+    <comp lib="0" loc="(410,305)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T2"/></comp>
+    <comp lib="0" loc="(410,315)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N3"/></comp>
+    <comp lib="0" loc="(560,300)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y5"/></comp>
+    <wire from="(460,300)" to="(560,300)"/>
+    <comp lib="1" loc="(460,340)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,325)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N0"/></comp>
+    <comp lib="0" loc="(410,335)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T1"/></comp>
+    <comp lib="0" loc="(410,345)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T2"/></comp>
+    <comp lib="0" loc="(410,355)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N3"/></comp>
+    <comp lib="0" loc="(560,340)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y6"/></comp>
+    <wire from="(460,340)" to="(560,340)"/>
+    <comp lib="1" loc="(460,380)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,365)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T0"/></comp>
+    <comp lib="0" loc="(410,375)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T1"/></comp>
+    <comp lib="0" loc="(410,385)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T2"/></comp>
+    <comp lib="0" loc="(410,395)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N3"/></comp>
+    <comp lib="0" loc="(560,380)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y7"/></comp>
+    <wire from="(460,380)" to="(560,380)"/>
+    <comp lib="1" loc="(460,420)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,405)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N0"/></comp>
+    <comp lib="0" loc="(410,415)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N1"/></comp>
+    <comp lib="0" loc="(410,425)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N2"/></comp>
+    <comp lib="0" loc="(410,435)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T3"/></comp>
+    <comp lib="0" loc="(560,420)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y8"/></comp>
+    <wire from="(460,420)" to="(560,420)"/>
+    <comp lib="1" loc="(460,460)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,445)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T0"/></comp>
+    <comp lib="0" loc="(410,455)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N1"/></comp>
+    <comp lib="0" loc="(410,465)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N2"/></comp>
+    <comp lib="0" loc="(410,475)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T3"/></comp>
+    <comp lib="0" loc="(560,460)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y9"/></comp>
+    <wire from="(460,460)" to="(560,460)"/>
+    <comp lib="1" loc="(460,500)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,485)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N0"/></comp>
+    <comp lib="0" loc="(410,495)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T1"/></comp>
+    <comp lib="0" loc="(410,505)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N2"/></comp>
+    <comp lib="0" loc="(410,515)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T3"/></comp>
+    <comp lib="0" loc="(560,500)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y10"/></comp>
+    <wire from="(460,500)" to="(560,500)"/>
+    <comp lib="1" loc="(460,540)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,525)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T0"/></comp>
+    <comp lib="0" loc="(410,535)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T1"/></comp>
+    <comp lib="0" loc="(410,545)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N2"/></comp>
+    <comp lib="0" loc="(410,555)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T3"/></comp>
+    <comp lib="0" loc="(560,540)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y11"/></comp>
+    <wire from="(460,540)" to="(560,540)"/>
+    <comp lib="1" loc="(460,580)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,565)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N0"/></comp>
+    <comp lib="0" loc="(410,575)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N1"/></comp>
+    <comp lib="0" loc="(410,585)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T2"/></comp>
+    <comp lib="0" loc="(410,595)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T3"/></comp>
+    <comp lib="0" loc="(560,580)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y12"/></comp>
+    <wire from="(460,580)" to="(560,580)"/>
+    <comp lib="1" loc="(460,620)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,605)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T0"/></comp>
+    <comp lib="0" loc="(410,615)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N1"/></comp>
+    <comp lib="0" loc="(410,625)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T2"/></comp>
+    <comp lib="0" loc="(410,635)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T3"/></comp>
+    <comp lib="0" loc="(560,620)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y13"/></comp>
+    <wire from="(460,620)" to="(560,620)"/>
+    <comp lib="1" loc="(460,660)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,645)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="N0"/></comp>
+    <comp lib="0" loc="(410,655)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T1"/></comp>
+    <comp lib="0" loc="(410,665)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T2"/></comp>
+    <comp lib="0" loc="(410,675)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T3"/></comp>
+    <comp lib="0" loc="(560,660)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y14"/></comp>
+    <wire from="(460,660)" to="(560,660)"/>
+    <comp lib="1" loc="(460,700)" name="AND Gate"><a name="inputs" val="4"/><a name="size" val="50"/></comp>
+    <comp lib="0" loc="(410,685)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T0"/></comp>
+    <comp lib="0" loc="(410,695)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T1"/></comp>
+    <comp lib="0" loc="(410,705)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T2"/></comp>
+    <comp lib="0" loc="(410,715)" name="Tunnel"><a name="facing" val="west"/><a name="label" val="T3"/></comp>
+    <comp lib="0" loc="(560,700)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="label" val="Y15"/></comp>
+    <wire from="(460,700)" to="(560,700)"/>
+  </circuit>
+</project>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.7.1" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <circuit name="main">
+    <a name="circuit" val="main"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif bold 16"/>
+    <comp lib="6" loc="(310,60)" name="Text">
+      <a name="text" val="Exercise 7M: 4-bit Binary to Decimal"/>
+    </comp>
+    <comp lib="0" loc="(100,250)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Binary [4-bit]"/>
+      <a name="width" val="4"/>
+    </comp>
+    <wire from="(100,250)" to="(250,250)"/>
+    <wire from="(250,250)" to="(250,310)"/>
+    <comp lib="5" loc="(250,310)" name="Hex Digit Display"/>
+    <comp lib="6" loc="(310,400)" name="Text">
+      <a name="text" val="Displays decimal value 0-15"/>
+    </comp>
+    <comp lib="6" loc="(310,420)" name="Text">
+      <a name="text" val="Set pin value to test (e.g. 0101 = 5)"/>
+    </comp>
+  </circuit>
+</project>

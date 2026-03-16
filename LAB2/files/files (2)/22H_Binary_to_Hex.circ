@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.7.1" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <circuit name="main">
+    <a name="circuit" val="main"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif bold 16"/>
+    <comp lib="6" loc="(350,50)" name="Text">
+      <a name="text" val="Exercise 22H: 8-bit Binary to Hexadecimal"/>
+    </comp>
+    <comp lib="0" loc="(80,200)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Input [8-bit]"/>
+      <a name="width" val="8"/>
+    </comp>
+    <wire from="(80,200)" to="(200,200)"/>
+    <comp lib="0" loc="(200,200)" name="Splitter">
+      <a name="incoming" val="8"/>
+      <a name="fanout" val="2"/>
+      <a name="bit0" val="0"/>
+      <a name="bit1" val="0"/>
+      <a name="bit2" val="0"/>
+      <a name="bit3" val="0"/>
+      <a name="bit4" val="1"/>
+      <a name="bit5" val="1"/>
+      <a name="bit6" val="1"/>
+      <a name="bit7" val="1"/>
+    </comp>
+    <wire from="(220,210)" to="(250,210)"/>
+    <wire from="(250,210)" to="(250,280)"/>
+    <comp lib="5" loc="(250,280)" name="Hex Digit Display"/>
+    <wire from="(220,190)" to="(380,190)"/>
+    <wire from="(380,190)" to="(380,280)"/>
+    <comp lib="5" loc="(380,280)" name="Hex Digit Display"/>
+    <comp lib="6" loc="(250,370)" name="Text">
+      <a name="text" val="High Nibble"/>
+    </comp>
+    <comp lib="6" loc="(380,370)" name="Text">
+      <a name="text" val="Low Nibble"/>
+    </comp>
+    <comp lib="6" loc="(320,420)" name="Text">
+      <a name="text" val="8 bits split into two 4-bit groups"/>
+    </comp>
+    <comp lib="6" loc="(320,440)" name="Text">
+      <a name="text" val="Each group = one hex digit (0-F)"/>
+    </comp>
+    <comp lib="6" loc="(320,460)" name="Text">
+      <a name="text" val="e.g. 10101111 = AF in hex"/>
+    </comp>
+  </circuit>
+</project>

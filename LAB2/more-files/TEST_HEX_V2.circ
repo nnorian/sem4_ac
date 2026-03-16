@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.7.1" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <circuit name="main">
+    <a name="circuit" val="main"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif bold 14"/>
+
+    <comp lib="6" loc="(300,30)" name="Text">
+      <a name="text" val="HEX DISPLAY PIN TEST - which method connects?"/>
+    </comp>
+
+    <comp lib="6" loc="(150,70)" name="Text">
+      <a name="text" val="Method A: wire to loc from LEFT"/>
+    </comp>
+    <comp lib="0" loc="(80,150)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="width" val="4"/>
+      <a name="label" val="A_in"/>
+    </comp>
+    <wire from="(80,150)" to="(200,150)"/>
+    <comp lib="5" loc="(200,150)" name="Hex Digit Display"/>
+
+    <comp lib="6" loc="(450,70)" name="Text">
+      <a name="text" val="Method B: wire to loc from ABOVE"/>
+    </comp>
+    <comp lib="0" loc="(380,100)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="width" val="4"/>
+      <a name="label" val="B_in"/>
+    </comp>
+    <wire from="(380,100)" to="(500,100)"/>
+    <wire from="(500,100)" to="(500,150)"/>
+    <comp lib="5" loc="(500,150)" name="Hex Digit Display"/>
+
+    <comp lib="6" loc="(150,230)" name="Text">
+      <a name="text" val="Method C: wire THROUGH loc vertically"/>
+    </comp>
+    <comp lib="0" loc="(80,280)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="width" val="4"/>
+      <a name="label" val="C_in"/>
+    </comp>
+    <wire from="(80,280)" to="(200,280)"/>
+    <wire from="(200,280)" to="(200,350)"/>
+    <comp lib="5" loc="(200,320)" name="Hex Digit Display"/>
+
+    <comp lib="6" loc="(450,230)" name="Text">
+      <a name="text" val="Method D: wire ends at loc+0,+30 (below display)"/>
+    </comp>
+    <comp lib="0" loc="(380,280)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="width" val="4"/>
+      <a name="label" val="D_in"/>
+    </comp>
+    <wire from="(380,280)" to="(500,280)"/>
+    <wire from="(500,280)" to="(500,370)"/>
+    <comp lib="5" loc="(500,340)" name="Hex Digit Display"/>
+
+    <comp lib="6" loc="(150,410)" name="Text">
+      <a name="text" val="Method E: Splitter(facing south) output below to display"/>
+    </comp>
+    <comp lib="0" loc="(80,460)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="width" val="4"/>
+      <a name="label" val="E_in"/>
+    </comp>
+    <wire from="(80,460)" to="(200,460)"/>
+    <wire from="(200,460)" to="(200,530)"/>
+    <comp lib="5" loc="(200,500)" name="Hex Digit Display"/>
+
+    <comp lib="6" loc="(450,410)" name="Text">
+      <a name="text" val="Method F: loc=(500,500), wire from (500,460) to (500,500)"/>
+    </comp>
+    <comp lib="0" loc="(380,460)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="width" val="4"/>
+      <a name="label" val="F_in"/>
+    </comp>
+    <wire from="(380,460)" to="(500,460)"/>
+    <wire from="(500,460)" to="(500,500)"/>
+    <comp lib="5" loc="(500,500)" name="Hex Digit Display"/>
+
+  </circuit>
+</project>

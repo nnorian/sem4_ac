@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.7.1" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <circuit name="main">
+    <a name="circuit" val="main"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif bold 16"/>
+    <comp lib="6" loc="(310,30)" name="Text">
+      <a name="text" val="Exercise 16H: 8-bit Bitwise Negation"/>
+    </comp>
+    <comp lib="6" loc="(310,50)" name="Text">
+      <a name="text" val="Each bit passes through its own NOT gate"/>
+    </comp>
+    <comp lib="0" loc="(80,100)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Bit7"/>
+    </comp>
+    <wire from="(80,100)" to="(220,100)"/>
+    <comp lib="1" loc="(250,100)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(250,100)" to="(430,100)"/>
+    <comp lib="0" loc="(430,100)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="NotBit7"/>
+    </comp>
+    <comp lib="0" loc="(80,150)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Bit6"/>
+    </comp>
+    <wire from="(80,150)" to="(220,150)"/>
+    <comp lib="1" loc="(250,150)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(250,150)" to="(430,150)"/>
+    <comp lib="0" loc="(430,150)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="NotBit6"/>
+    </comp>
+    <comp lib="0" loc="(80,200)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Bit5"/>
+    </comp>
+    <wire from="(80,200)" to="(220,200)"/>
+    <comp lib="1" loc="(250,200)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(250,200)" to="(430,200)"/>
+    <comp lib="0" loc="(430,200)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="NotBit5"/>
+    </comp>
+    <comp lib="0" loc="(80,250)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Bit4"/>
+    </comp>
+    <wire from="(80,250)" to="(220,250)"/>
+    <comp lib="1" loc="(250,250)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(250,250)" to="(430,250)"/>
+    <comp lib="0" loc="(430,250)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="NotBit4"/>
+    </comp>
+    <comp lib="0" loc="(80,300)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Bit3"/>
+    </comp>
+    <wire from="(80,300)" to="(220,300)"/>
+    <comp lib="1" loc="(250,300)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(250,300)" to="(430,300)"/>
+    <comp lib="0" loc="(430,300)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="NotBit3"/>
+    </comp>
+    <comp lib="0" loc="(80,350)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Bit2"/>
+    </comp>
+    <wire from="(80,350)" to="(220,350)"/>
+    <comp lib="1" loc="(250,350)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(250,350)" to="(430,350)"/>
+    <comp lib="0" loc="(430,350)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="NotBit2"/>
+    </comp>
+    <comp lib="0" loc="(80,400)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Bit1"/>
+    </comp>
+    <wire from="(80,400)" to="(220,400)"/>
+    <comp lib="1" loc="(250,400)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(250,400)" to="(430,400)"/>
+    <comp lib="0" loc="(430,400)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="NotBit1"/>
+    </comp>
+    <comp lib="0" loc="(80,450)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="Bit0"/>
+    </comp>
+    <wire from="(80,450)" to="(220,450)"/>
+    <comp lib="1" loc="(250,450)" name="NOT Gate"><a name="size" val="30"/></comp>
+    <wire from="(250,450)" to="(430,450)"/>
+    <comp lib="0" loc="(430,450)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="NotBit0"/>
+    </comp>
+  </circuit>
+</project>

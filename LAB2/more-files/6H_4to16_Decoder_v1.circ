@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.16.0" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <circuit name="main">
+    <a name="circuit" val="main"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif bold 16"/>
+
+    <comp lib="6" loc="(350,40)" name="Text">
+      <a name="text" val="Exercise 6H: 4-to-16 Decoder"/>
+    </comp>
+    <comp lib="6" loc="(350,60)" name="Text">
+      <a name="text" val="One-hot output: exactly one Y is high for each input value"/>
+    </comp>
+
+    <!-- Single 4-bit input pin -->
+    <comp lib="0" loc="(80,370)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="A[3:0]"/>
+      <a name="width" val="4"/>
+    </comp>
+
+    <!-- Decoder: select=4 means 4-bit input, 16 outputs -->
+    <!-- loc is the select input pin location -->
+    <comp lib="2" loc="(200,370)" name="Decoder">
+      <a name="select" val="4"/>
+    </comp>
+
+    <!-- Output pins Y0-Y15 directly wired from decoder outputs -->
+    <!-- Decoder outputs are on east side, spaced 10px apart starting from top -->
+    <!-- With select=4, decoder height = 16*10 = 160px -->
+    <!-- Decoder loc=(200,370) is select input at bottom -->
+    <!-- Top of decoder outputs at y = 370 - 150 = 220, spaced 10px -->
+    <comp lib="0" loc="(400,220)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y0"/>
+    </comp>
+    <comp lib="0" loc="(400,230)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y1"/>
+    </comp>
+    <comp lib="0" loc="(400,240)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y2"/>
+    </comp>
+    <comp lib="0" loc="(400,250)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y3"/>
+    </comp>
+    <comp lib="0" loc="(400,260)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y4"/>
+    </comp>
+    <comp lib="0" loc="(400,270)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y5"/>
+    </comp>
+    <comp lib="0" loc="(400,280)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y6"/>
+    </comp>
+    <comp lib="0" loc="(400,290)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y7"/>
+    </comp>
+    <comp lib="0" loc="(400,300)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y8"/>
+    </comp>
+    <comp lib="0" loc="(400,310)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y9"/>
+    </comp>
+    <comp lib="0" loc="(400,320)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y10"/>
+    </comp>
+    <comp lib="0" loc="(400,330)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y11"/>
+    </comp>
+    <comp lib="0" loc="(400,340)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y12"/>
+    </comp>
+    <comp lib="0" loc="(400,350)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y13"/>
+    </comp>
+    <comp lib="0" loc="(400,360)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y14"/>
+    </comp>
+    <comp lib="0" loc="(400,370)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y15"/>
+    </comp>
+
+    <!-- Wire input to decoder -->
+    <wire from="(80,370)" to="(200,370)"/>
+
+    <!-- Wire decoder outputs to output pins -->
+    <wire from="(280,220)" to="(400,220)"/>
+    <wire from="(280,230)" to="(400,230)"/>
+    <wire from="(280,240)" to="(400,240)"/>
+    <wire from="(280,250)" to="(400,250)"/>
+    <wire from="(280,260)" to="(400,260)"/>
+    <wire from="(280,270)" to="(400,270)"/>
+    <wire from="(280,280)" to="(400,280)"/>
+    <wire from="(280,290)" to="(400,290)"/>
+    <wire from="(280,300)" to="(400,300)"/>
+    <wire from="(280,310)" to="(400,310)"/>
+    <wire from="(280,320)" to="(400,320)"/>
+    <wire from="(280,330)" to="(400,330)"/>
+    <wire from="(280,340)" to="(400,340)"/>
+    <wire from="(280,350)" to="(400,350)"/>
+    <wire from="(280,360)" to="(400,360)"/>
+    <wire from="(280,370)" to="(400,370)"/>
+  </circuit>
+</project>

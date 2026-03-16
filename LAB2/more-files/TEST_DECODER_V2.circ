@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.7.1" version="1.0">
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <circuit name="main">
+    <a name="circuit" val="main"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif bold 14"/>
+
+    <comp lib="6" loc="(300,30)" name="Text">
+      <a name="text" val="DECODER PIN TEST - select=4, 16 outputs"/>
+    </comp>
+
+    <comp lib="2" loc="(300,100)" name="Decoder">
+      <a name="select" val="4"/>
+    </comp>
+
+    <comp lib="6" loc="(100,60)" name="Text">
+      <a name="text" val="Try select on south: wire to (280,280)"/>
+    </comp>
+    <comp lib="0" loc="(80,280)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="width" val="4"/>
+      <a name="label" val="sel_south"/>
+    </comp>
+    <wire from="(80,280)" to="(280,280)"/>
+
+    <comp lib="6" loc="(100,310)" name="Text">
+      <a name="text" val="Also try: wire from (260,100) going left"/>
+    </comp>
+    <comp lib="0" loc="(80,100)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="width" val="4"/>
+      <a name="label" val="sel_west"/>
+    </comp>
+    <wire from="(80,100)" to="(260,100)"/>
+
+    <comp lib="0" loc="(420,100)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y0"/>
+    </comp>
+    <wire from="(300,100)" to="(420,100)"/>
+
+    <comp lib="0" loc="(420,250)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="Y15"/>
+    </comp>
+    <wire from="(300,250)" to="(420,250)"/>
+
+  </circuit>
+</project>
