@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  BCD ADDER — Single-digit (4-bit) BCD adder with carry
+  Lab 5 Variant 14 — UTM / FAF-243
+
+  DESIGN OVERVIEW
+  ───────────────
+  Stage 1 : 4-bit binary adder  →  S[3:0], C4
+  Correction detect : CORRECT = C4 | (S3·S2) | (S3·S1)
+  Correction value  : {0, CORRECT, CORRECT, 0} = 0x6 when CORRECT=1
+  Stage 2 : 4-bit binary adder  →  BCD_Sum[3:0]
+  Carry out : BCD_Cout = CORRECT  (captures all cases where sum > 9)
+
+  PORT TRUTH TABLE (sample)
+  A   B  Cin │ BCD_Sum  BCD_Cout
+  ──────────────────────────────
+  7   8   0  │    5        1      (7+8=15)
+  9   9   0  │    8        1      (9+9=18)
+  4   3   0  │    7        0      (4+3=7)
+  9   9   1  │    9        1      (9+9+1=19)
+
+  LOGISIM PORT OFFSETS (Logisim 2.7.1, facing=East)
+    Adder at (X,Y) :  a=(X-40,Y-10)  b=(X-40,Y+10)
+                      cin=(X,Y+20)   cout=(X,Y-20)  sum=(X+40,Y)
+    AND/OR gate medium (50 px) at (X,Y), n inputs :
+                      in_i = (X-50, Y + (i-(n-1)/2)*20)  out=(X,Y)
+    Splitter appear=right at (X,Y), fanout=4 :
+                      combined=(X,Y)
+                      bit3=(X+30,Y-15) bit2=(X+30,Y-5)
+                      bit1=(X+30,Y+5)  bit0=(X+30,Y+15)
+    Splitter appear=left  at (X,Y), fanout=4 :
+                      combined=(X,Y)
+                      bit3=(X-30,Y-15) bit2=(X-30,Y-5)
+                      bit1=(X-30,Y+5)  bit0=(X-30,Y+15)
+-->
+<project source="2.7.1" version="1.0">
+  <lib desc="#Wiring"     name="0"/>
+  <lib desc="#Gates"      name="1"/>
+  <lib desc="#Plexers"    name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory"     name="4"/>
+  <lib desc="#I/O"        name="5"/>
+  <lib desc="#TTL"        name="6"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit"      val="1000"/>
+    <a name="simrand"       val="0"/>
+  </options>
+  <mappings/>
+  <toolbar/>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       BCD_ADDER subcircuit
+       ═══════════════════════════════════════════════════════════════ -->
+  <circuit name="BCD_Adder">
+
+    <!-- ── INPUT PINS ─────────────────────────────────────────── -->
+    <comp lib="0" loc="(40,190)" name="Pin">
+      <a name="output"   val="false"/>
+      <a name="width"    val="4"/>
+      <a name="label"    val="A"/>
+      <a name="labelloc" val="north"/>
+    </comp>
+    <comp lib="0" loc="(40,210)" name="Pin">
+      <a name="output"   val="false"/>
+      <a name="width"    val="4"/>
+      <a name="label"    val="B"/>
+      <a name="labelloc" val="north"/>
+    </comp>
+    <comp lib="0" loc="(40,230)" name="Pin">
+      <a name="output"   val="false"/>
+      <a name="width"    val="1"/>
+      <a name="label"    val="Cin"/>
+      <a name="labelloc" val="south"/>
+    </comp>
+
+    <!-- ── STAGE 1: BINARY ADDER  A + B + Cin ─────────────────
+         loc=(170,200)
+           a   = (130,190)   b   = (130,210)
+           cin = (170,220)   cout= (170,180)   sum = (210,200)  -->
+    <comp lib="3" loc="(170,200)" name="Adder">
+      <a name="width" val="4"/>
+    </comp>
+
+    <!-- ── SPLITTER 1: extract S3..S0 ─────────────────────────
+         loc=(240,200), appear=right
+           combined=(240,200)
+           bit3=(270,185)  bit2=(270,195)
+           bit1=(270,205)  bit0=(270,215)   -->
+    <comp lib="0" loc="(240,200)" name="Splitter">
+      <a name="fanout"   val="4"/>
+      <a name="incoming" val="4"/>
+      <a name="appear"   val="right"/>
+    </comp>
+
+    <!-- ── CORRECTION DETECTION: CORRECT = C4 | (S3·S2) | (S3·S1) ──
+         AND1 (S3·S2): loc=(360,170)
+           in0=(310,160)  in1=(310,180)  out=(360,170)
+         AND2 (S3·S1): loc=(360,230)
+           in0=(310,220)  in1=(310,240)  out=(360,230)
+         OR   (CORRECT): loc=(440,200)
+           in0=(390,180)  in1=(390,200)  in2=(390,220)  out=(440,200) -->
+    <comp lib="1" loc="(360,170)" name="AND Gate">
+      <a name="inputs" val="2"/>
+      <a name="label"  val="S3·S2"/>
+    </comp>
+    <comp lib="1" loc="(360,230)" name="AND Gate">
+      <a name="inputs" val="2"/>
+      <a name="label"  val="S3·S1"/>
+    </comp>
+    <comp lib="1" loc="(440,200)" name="OR Gate">
+      <a name="inputs" val="3"/>
+      <a name="label"  val="CORRECT"/>
+    </comp>
+
+    <!-- ── CORRECTION VALUE: {0, CORRECT, CORRECT, 0} = 0x6 ───────
+         Splitter2 (combiner): loc=(550,240), appear=left
+           combined=(550,240)
+           bit3=(520,225) → Ground (=0)
+           bit2=(520,235) → CORRECT
+           bit1=(520,245) → CORRECT
+           bit0=(520,255) → Ground (=0)                           -->
+    <comp lib="0" loc="(550,240)" name="Splitter">
+      <a name="fanout"   val="4"/>
+      <a name="incoming" val="4"/>
+      <a name="appear"   val="left"/>
+    </comp>
+    <!-- Ground at exact port locations → no wires needed -->
+    <comp lib="0" loc="(520,225)" name="Ground"/>
+    <comp lib="0" loc="(520,255)" name="Ground"/>
+
+    <!-- ── STAGE 2: CORRECTION ADDER  S + correction ──────────
+         loc=(610,230)
+           a   = (570,220)   b   = (570,240)
+           cin = (610,250)   cout= (610,210)   sum = (650,230)  -->
+    <comp lib="3" loc="(610,230)" name="Adder">
+      <a name="width" val="4"/>
+    </comp>
+    <!-- Ground → Adder2.cin  (no carry into the correction stage) -->
+    <comp lib="0" loc="(610,270)" name="Ground"/>
+
+    <!-- ── OUTPUT PINS ────────────────────────────────────────── -->
+    <!-- BCD_Sum  faces west so wire enters from left at (700,230) -->
+    <comp lib="0" loc="(700,230)" name="Pin">
+      <a name="output"   val="true"/>
+      <a name="facing"   val="west"/>
+      <a name="width"    val="4"/>
+      <a name="label"    val="BCD_Sum"/>
+      <a name="labelloc" val="east"/>
+    </comp>
+    <!-- BCD_Cout = CORRECT; wire runs straight right at y=200 -->
+    <comp lib="0" loc="(680,200)" name="Pin">
+      <a name="output"   val="true"/>
+      <a name="facing"   val="west"/>
+      <a name="width"    val="1"/>
+      <a name="label"    val="BCD_Cout"/>
+      <a name="labelloc" val="east"/>
+    </comp>
+
+    <!-- ══════════════════════════════════════════════════════════
+         WIRES
+         ══════════════════════════════════════════════════════════ -->
+
+    <!-- Inputs → Adder1 -->
+    <wire from="(40,190)"  to="(130,190)"/>   <!-- A → a      -->
+    <wire from="(40,210)"  to="(130,210)"/>   <!-- B → b      -->
+    <wire from="(40,230)"  to="(170,230)"/>   <!-- Cin: right  -->
+    <wire from="(170,230)" to="(170,220)"/>   <!-- Cin → cin  -->
+
+    <!-- Adder1.sum → Splitter1.combined -->
+    <wire from="(210,200)" to="(240,200)"/>
+
+    <!-- sum bus: branch below correction logic → Adder2.a
+         Route: down to y=260, right to x=545, up to y=220, right to Adder2.a -->
+    <wire from="(210,200)" to="(210,260)"/>
+    <wire from="(210,260)" to="(545,260)"/>
+    <wire from="(545,260)" to="(545,220)"/>
+    <wire from="(545,220)" to="(570,220)"/>
+
+    <!-- S3 (bit3 = top, y=185) → AND1.in0  AND  AND2.in0
+         Route left to x=265 to avoid crossing S2/S1 wires -->
+    <wire from="(270,185)" to="(265,185)"/>
+    <wire from="(265,185)" to="(265,160)"/>   <!-- up  to AND1.in0 row -->
+    <wire from="(265,160)" to="(310,160)"/>   <!-- → AND1.in0          -->
+    <wire from="(265,185)" to="(265,220)"/>   <!-- down to AND2.in0 row -->
+    <wire from="(265,220)" to="(310,220)"/>   <!-- → AND2.in0           -->
+
+    <!-- S2 (bit2, y=195) → AND1.in1 -->
+    <wire from="(270,195)" to="(310,195)"/>
+    <wire from="(310,195)" to="(310,180)"/>   <!-- up to AND1.in1 -->
+
+    <!-- S1 (bit1, y=205) → AND2.in1 -->
+    <wire from="(270,205)" to="(315,205)"/>
+    <wire from="(315,205)" to="(315,240)"/>   <!-- down to AND2.in1 row -->
+    <wire from="(315,240)" to="(310,240)"/>   <!-- → AND2.in1           -->
+
+    <!-- C4 (Adder1.cout = 170,180) → OR.in0 (390,180)
+         Route above Splitter1 to avoid crossing -->
+    <wire from="(170,180)" to="(170,150)"/>
+    <wire from="(170,150)" to="(390,150)"/>
+    <wire from="(390,150)" to="(390,180)"/>
+
+    <!-- AND1.out (360,170) → OR.in1 (390,200) -->
+    <wire from="(360,170)" to="(380,170)"/>
+    <wire from="(380,170)" to="(380,200)"/>
+    <wire from="(380,200)" to="(390,200)"/>
+
+    <!-- AND2.out (360,230) → OR.in2 (390,220) -->
+    <wire from="(360,230)" to="(380,230)"/>
+    <wire from="(380,230)" to="(380,220)"/>
+    <wire from="(380,220)" to="(390,220)"/>
+
+    <!-- CORRECT (OR.out = 440,200):
+         a) straight right to BCD_Cout pin  AND
+         b) branch at x=500 down to Splitter2 bit2 and bit1 -->
+    <wire from="(440,200)" to="(680,200)"/>   <!-- CORRECT → BCD_Cout -->
+    <wire from="(500,200)" to="(500,235)"/>   <!-- branch: down        -->
+    <wire from="(500,235)" to="(520,235)"/>   <!-- → Splitter2.bit2    -->
+    <wire from="(500,235)" to="(500,245)"/>   <!-- continue down       -->
+    <wire from="(500,245)" to="(520,245)"/>   <!-- → Splitter2.bit1    -->
+
+    <!-- Splitter2.combined → Adder2.b -->
+    <wire from="(550,240)" to="(570,240)"/>
+
+    <!-- Ground → Adder2.cin -->
+    <wire from="(610,270)" to="(610,250)"/>
+
+    <!-- Adder2.sum → BCD_Sum output pin -->
+    <wire from="(650,230)" to="(700,230)"/>
+
+  </circuit>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       MAIN — test circuit: 0x7 + 0x8 + 0 = 0x15 (BCD: Cout=1, Sum=5)
+       ═══════════════════════════════════════════════════════════════ -->
+  <circuit name="main">
+
+    <!-- Input: A = 7 (0111) -->
+    <comp lib="0" loc="(40,180)" name="Constant">
+      <a name="width" val="4"/>
+      <a name="value" val="0x7"/>
+      <a name="label" val="A=7"/>
+    </comp>
+
+    <!-- Input: B = 8 (1000) -->
+    <comp lib="0" loc="(40,210)" name="Constant">
+      <a name="width" val="4"/>
+      <a name="value" val="0x8"/>
+      <a name="label" val="B=8"/>
+    </comp>
+
+    <!-- Input: Cin = 0 -->
+    <comp lib="0" loc="(40,240)" name="Constant">
+      <a name="width" val="1"/>
+      <a name="value" val="0x0"/>
+      <a name="label" val="Cin=0"/>
+    </comp>
+
+    <!-- BCD_Adder subcircuit instance -->
+    <comp loc="(200,210)" name="BCD_Adder"/>
+
+    <!-- Output probes (wire these to the BCD_Adder outputs in Logisim) -->
+    <comp lib="0" loc="(390,180)" name="Pin">
+      <a name="output"   val="true"/>
+      <a name="width"    val="4"/>
+      <a name="label"    val="BCD_Sum (exp:5)"/>
+      <a name="labelloc" val="east"/>
+    </comp>
+    <comp lib="0" loc="(390,145)" name="Pin">
+      <a name="output"   val="true"/>
+      <a name="width"    val="1"/>
+      <a name="label"    val="BCD_Cout (exp:1)"/>
+      <a name="labelloc" val="east"/>
+    </comp>
+
+  </circuit>
+
+</project>
