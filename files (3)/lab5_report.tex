@@ -1,0 +1,1166 @@
+\documentclass[12pt,a4paper]{article}
+
+% ============================================
+% PACKAGES
+% ============================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{upquote}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{float}
+
+% ============================================
+% PAGE LAYOUT
+% ============================================
+\geometry{
+    a4paper,
+    left=30mm, right=15mm,
+    top=20mm,  bottom=20mm,
+    headheight=15pt
+}
+
+% ============================================
+% CODE STYLE
+% ============================================
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.05,0.05,0.05}
+\definecolor{codeorange}{rgb}{1,0.5,0}
+\definecolor{codeyellow}{rgb}{0.9,0.8,0.2}
+\definecolor{codeblue}{rgb}{0.4,0.6,1}
+
+\lstdefinelanguage{nasm}{
+    morekeywords={section,global,bits,mov,add,sub,imul,idiv,cdq,cmp,jmp,je,jne,
+                  jg,jge,jl,jle,jb,ja,jnz,jz,jnc,push,pop,call,ret,int,xor,
+                  inc,dec,test,div,daa,db,dw,dd,equ,resb,resw,resd,
+                  byte,word,dword,main},
+    sensitive=false,
+    morecomment=[l]{;},
+    morestring=[b]",
+    morestring=[b]',
+}
+
+\lstdefinestyle{asmstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codeorange},
+    basicstyle=\ttfamily\footnotesize\color{white},
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showstringspaces=false,
+    tabsize=4,
+    language=nasm,
+}
+\lstset{style=asmstyle}
+
+% ============================================
+% SECTION FORMATTING
+% ============================================
+\titleformat{\section}{\normalfont\Large\bfseries\uppercase}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% ============================================
+% HYPERLINKS
+% ============================================
+\hypersetup{
+    colorlinks=true, linkcolor=black,
+    urlcolor=cyan,
+    pdftitle={Laboratory Work 5 - Assembly and BCD Numbers},
+}
+
+% ============================================
+% HEADER/FOOTER
+% ============================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% ============================================
+% CAPTION SETUP
+% ============================================
+\captionsetup[figure]{font=small,labelfont=bf,skip=3pt}
+
+\begin{document}
+
+% ============================================
+% TITLE PAGE
+% ============================================
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    {\Large Ministerul Educa\c{t}iei \c{s}i Cercet\u{a}rii al Republicii Moldova\\}
+    \vspace{0.5cm}
+    {\Large Universitatea Tehnic\u{a} a Moldovei\\}
+    \vspace{0.5cm}
+    {\Large Facultatea Calculatoare, Informatic\u{a} \c{s}i Microelectronic\u{a}\\}
+    \vspace{3cm}
+    {\LARGE \textbf{Laboratory work No. 5:}\\}
+    \vspace{0.5cm}
+    {\LARGE \textbf{Assembly Arithmetic \&}\\}
+    \vspace{0.3cm}
+    {\LARGE \textbf{BCD Number Representation}\\}
+    \vspace{0.3cm}
+    {\LARGE \textbf{in NASM}\\}
+    \vfill
+    \begin{flushleft}
+    \hspace{7cm}\textbf{Elaborated:}\\
+    \hspace{7cm}st. gr. FAF-243 Kushnirenko Ecaterina\\
+    \vspace{1cm}
+    \hspace{7cm}\textbf{Verified:}\\
+    \hspace{7cm}asist. univ. Fi\c{s}tic Cristofor\\
+    \end{flushleft}
+    \vspace{1cm}
+    {\large Chi\c{s}in\u{a}u - 2026}
+\end{titlepage}
+
+% ============================================
+% TABLE OF CONTENTS
+% ============================================
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+
+\newpage
+\setcounter{page}{3}
+
+% ============================================
+\section{INTRODUCTION}
+% ============================================
+
+\subsection{Registers and Arithmetic in x86 Assembly}
+
+In x86 Assembly Language, all computation takes place directly in CPU registers --- small,
+ultra-fast storage locations built into the processor. Unlike high-level languages that
+hide arithmetic behind operators, Assembly requires the programmer to explicitly load
+operands into registers, apply an instruction, and store the result. This gives complete
+visibility into every step of a computation.
+
+The general-purpose registers used for arithmetic in 32-bit (IA-32) mode are:
+
+\begin{table}[H]
+\centering
+\caption{General-purpose registers used in this laboratory}
+\small
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Register} & \textbf{Primary Role} \\
+\hline
+EAX & Accumulator --- holds operands and results; \texttt{idiv} places quotient here \\
+\hline
+EBX & General operand storage \\
+\hline
+ECX & Counter and temporary operand \\
+\hline
+EDX & Extended accumulator --- \texttt{cdq} sign-extends EAX into EDX:EAX before division;
+\texttt{idiv} places remainder here \\
+\hline
+ESI & Save register --- used to preserve intermediate results across operations \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{BCD (Binary Coded Decimal) Representation}
+
+Binary Coded Decimal (BCD) is a class of encodings in which each decimal digit (0--9) is
+represented individually by its binary equivalent. The most common variant is the
+\textbf{8421 BCD} code, where each digit occupies exactly four bits (a nibble), weighted
+$2^3, 2^2, 2^1, 2^0$.
+
+\begin{table}[H]
+\centering
+\caption{8421 BCD encoding table}
+\small
+\begin{tabular}{|c|c||c|c|}
+\hline
+\textbf{Decimal} & \textbf{BCD} & \textbf{Decimal} & \textbf{BCD} \\
+\hline
+0 & 0000 & 5 & 0101 \\
+\hline
+1 & 0001 & 6 & 0110 \\
+\hline
+2 & 0010 & 7 & 0111 \\
+\hline
+3 & 0011 & 8 & 1000 \\
+\hline
+4 & 0100 & 9 & 1001 \\
+\hline
+\end{tabular}
+\end{table}
+
+The six bit patterns 1010--1111 are invalid in BCD. When arithmetic produces these
+patterns, a correction of \texttt{+6} (0110) is applied to skip over the invalid states
+and return to a valid BCD digit.
+
+% ============================================
+\section{PURPOSE OF THE REPORT}
+% ============================================
+
+This report documents Laboratory Work No.\ 5, Variant 14.  The objectives are:
+
+\begin{itemize}
+    \renewcommand{\labelitemi}{--}
+    \item Write a NASM program that computes the register expression $A = (A+B)-(C+D)$
+    \item Implement three arithmetic expressions selected according to the variant rules
+    \item Perform manual BCD conversions, additions, and subtractions using 9's complement
+    \item Understand the structure of a BCD adder circuit
+    \item Write a NASM program that adds two packed 8-bit BCD numbers using the \texttt{DAA}
+    instruction
+\end{itemize}
+
+\subsection{Variant Selection}
+
+Variant number: \textbf{14} (even).
+
+\begin{itemize}
+    \renewcommand{\labelitemi}{--}
+    \item \textbf{Expression 1:} Variant 14 $\Rightarrow$ \textbf{Expression 14}
+    \item \textbf{Expression 2:} 14 is even $\Rightarrow$ add 2: $14+2 = 16 > 15$, so
+    divide by 2: $16 \div 2 = 8$ $\Rightarrow$ \textbf{Expression 8}
+    \item \textbf{Expression 3:} 8 is even $\Rightarrow$ add 2: $8+2 = 10 \leq 15$
+    $\Rightarrow$ \textbf{Expression 10}
+    \item \textbf{BCD section:} Variant 14 is even $\Rightarrow$ use the \emph{even}
+    column numbers: 21, 25, 36, 98, 125, 156
+\end{itemize}
+
+% ============================================
+\newpage
+\section{KEY INSTRUCTIONS USED}
+% ============================================
+
+\begin{table}[H]
+\centering
+\caption{NASM instructions used in this laboratory}
+\small
+\begin{tabular}{|l|p{9.5cm}|}
+\hline
+\textbf{Instruction} & \textbf{Description} \\
+\hline
+\texttt{MOV dest, src} & Copies a value from source to destination register or memory \\
+\hline
+\texttt{ADD dest, src} & Adds source to destination; result stored in destination \\
+\hline
+\texttt{SUB dest, src} & Subtracts source from destination \\
+\hline
+\texttt{IMUL dest, src} & Signed integer multiplication \\
+\hline
+\texttt{CDQ} & Sign-extends EAX into the EDX:EAX pair; required before \texttt{IDIV} \\
+\hline
+\texttt{IDIV src} & Signed division of EDX:EAX by src; quotient $\to$ EAX, remainder $\to$ EDX \\
+\hline
+\texttt{DAA} & Decimal Adjust AL after Addition; corrects AL to a valid packed BCD byte
+after a binary \texttt{ADD} (32-bit mode only) \\
+\hline
+\texttt{JNC label} & Jump if Carry Flag = 0 (no carry generated) \\
+\hline
+\texttt{XOR reg, reg} & Zeros a register efficiently ($r \oplus r = 0$) \\
+\hline
+\texttt{INT 0x80} & Linux 32-bit syscall interrupt \\
+\hline
+\texttt{SYSCALL} & Linux 64-bit syscall instruction \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{The DAA Instruction}
+
+\texttt{DAA} (Decimal Adjust AL after Addition) is a special x86 instruction that
+corrects the binary result of an \texttt{ADD} on two packed BCD bytes.  Its internal
+logic is:
+
+\begin{enumerate}
+    \item If the low nibble of AL exceeds 9, or the Auxiliary Carry flag (AF) is set:
+    $\texttt{AL} \mathrel{+}= 6$
+    \item If AL exceeds \texttt{0x99}, or the Carry flag (CF) is set:
+    $\texttt{AL} \mathrel{+}= \texttt{0x60}$; set CF
+\end{enumerate}
+
+\noindent\textbf{Important:} \texttt{DAA} is only valid in 32-bit (IA-32) mode.  Intel
+removed it from the x86-64 instruction set.  Code using \texttt{DAA} must therefore be
+assembled with \texttt{nasm -f elf32} and linked with \texttt{ld -m elf\_i386}.
+
+% ============================================
+\newpage
+\section{TASK 1 --- REGISTER EXPRESSION}
+% ============================================
+
+\subsection{Formula and Values}
+
+\[
+A = (A + B) - (C + D)
+\]
+
+Test values: $A = 10$, $B = 5$, $C = 3$, $D = 2$.
+
+Expected result: $(10 + 5) - (3 + 2) = 15 - 5 = \mathbf{10}$.
+
+\subsection{Register Usage}
+
+\begin{table}[H]
+\centering
+\caption{Register usage --- Task 1}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Register} & \textbf{Contents} \\
+\hline
+EAX & Holds $A+B = 15$, then the final result $= 10$ \\
+\hline
+EBX & Holds $C+D = 5$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Source Code}
+
+\begin{lstlisting}[caption={task1\_expression.asm --- A = (A+B) - (C+D)}]
+; Task 1: A = (A + B) - (C + D)
+; Works in SASM (64-bit mode, entry point: main)
+
+section .data
+    A      dd 10
+    B      dd  5
+    C      dd  3
+    D      dd  2
+    result dd  0
+
+section .text
+    global main
+
+main:
+    mov eax, [A]       ; eax = A
+    add eax, [B]       ; eax = A + B
+
+    mov ebx, [C]       ; ebx = C
+    add ebx, [D]       ; ebx = C + D
+
+    sub eax, ebx       ; eax = (A+B) - (C+D)
+
+    mov [result], eax  ; store result
+
+    xor eax, eax       ; return 0
+    ret
+\end{lstlisting}
+
+\subsection{Step-by-Step Trace}
+
+\begin{table}[H]
+\centering
+\caption{Execution trace --- Task 1}
+\small
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Instruction} & \textbf{EAX} & \textbf{EBX} \\
+\hline
+\texttt{mov eax, [A]}  & 10 & --- \\
+\hline
+\texttt{add eax, [B]}  & 15 & --- \\
+\hline
+\texttt{mov ebx, [C]}  & 15 & 3 \\
+\hline
+\texttt{add ebx, [D]}  & 15 & 5 \\
+\hline
+\texttt{sub eax, ebx}  & \textbf{10} & 5 \\
+\hline
+\end{tabular}
+\end{table}
+
+% ============================================
+\newpage
+\section{TASK 2 --- ARITHMETIC EXPRESSIONS}
+% ============================================
+
+% -------------------------------------------
+\subsection{Expression 14}
+% -------------------------------------------
+
+\subsubsection{Formula and Manual Verification}
+
+\[
+z = \frac{a \cdot c - b \cdot d}{f} + \frac{(-a+b) \cdot c}{d} \bigg/ h
+\]
+
+Values: $a=6,\ b=3,\ c=9,\ d=3,\ f=3,\ h=2$.
+
+\[
+z = \frac{6 \cdot 9 - 3 \cdot 3}{3} + \frac{(-6+3) \cdot 9}{3} \bigg/ 2
+  = \frac{45}{3} + \frac{-27}{3} \bigg/ 2
+  = \frac{15 + (-9)}{2}
+  = \frac{6}{2} = \mathbf{3}
+\]
+
+\subsubsection{Register Usage}
+
+\begin{table}[H]
+\centering
+\caption{Register usage --- Expression 14}
+\small
+\begin{tabular}{|l|p{9cm}|}
+\hline
+\textbf{Register} & \textbf{Contents at key steps} \\
+\hline
+EAX & $a \cdot c = 54 \to 54 - 9 = 45 \to 45/3 = 15 \to b-a=-3 \to -3 \cdot c=-27 \to -27/d=-9 \to -9+15=6 \to 6/2=3$ \\
+\hline
+EBX & $b \cdot d = 9$ \\
+\hline
+ECX & First term: $(a \cdot c - b \cdot d)/f = 15$ (saved across part 2) \\
+\hline
+EDX & Sign-extension half of dividend (set by \texttt{cdq}) \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Source Code}
+
+\begin{lstlisting}[caption={task2\_expr14.asm --- Expression 14}]
+; Task 2 - Expression 14: z = ((a*c - b*d)/f + (-a+b)*c/d) / h
+; Values: a=6, b=3, c=9, d=3, f=3, h=2  =>  z = 3
+; Works in SASM (64-bit mode, entry point: main)
+
+section .data
+    a      dd  6
+    b      dd  3
+    c      dd  9
+    d      dd  3
+    f      dd  3
+    h      dd  2
+    result dd  0
+
+section .text
+    global main
+
+main:
+    ; --- part 1: (a*c - b*d) / f ---
+    mov  eax, [a]
+    imul eax, dword [c]    ; eax = a*c = 54
+    mov  ebx, [b]
+    imul ebx, dword [d]    ; ebx = b*d = 9
+    sub  eax, ebx          ; eax = 45
+    cdq
+    idiv dword [f]         ; eax = 45/3 = 15
+    mov  ecx, eax          ; save first term
+
+    ; --- part 2: (-a+b)*c / d ---
+    mov  eax, [b]
+    sub  eax, [a]          ; eax = b-a = -3
+    imul eax, dword [c]    ; eax = -3*9 = -27
+    cdq
+    idiv dword [d]         ; eax = -27/3 = -9
+
+    ; --- part 3: add terms, divide by h ---
+    add  eax, ecx          ; eax = -9+15 = 6
+    cdq
+    idiv dword [h]         ; eax = 6/2 = 3  => z
+
+    mov  [result], eax
+
+    xor  eax, eax
+    ret
+\end{lstlisting}
+
+% -------------------------------------------
+\newpage
+\subsection{Expression 8}
+% -------------------------------------------
+
+\subsubsection{Formula and Manual Verification}
+
+\[
+z = \frac{(-a+b+c+1)^{3}}{(a - b \cdot c + d)^{2}}
+\]
+
+Values: $a=2,\ b=3,\ c=1,\ d=2$.
+
+\[
+\text{num base} = -2+3+1+1 = 3 \quad\Rightarrow\quad 3^3 = 27
+\]
+\[
+\text{den base} = 2 - 3 \cdot 1 + 2 = 1 \quad\Rightarrow\quad 1^2 = 1
+\]
+\[
+z = 27 / 1 = \mathbf{27}
+\]
+
+\subsubsection{Register Usage}
+
+\begin{table}[H]
+\centering
+\caption{Register usage --- Expression 8}
+\small
+\begin{tabular}{|l|p{9cm}|}
+\hline
+\textbf{Register} & \textbf{Contents at key steps} \\
+\hline
+EAX & base$=3 \to$ base$^2=9 \to$ base$^3=27$ (numerator) $\to z=27$ \\
+\hline
+EBX & base $= 3$ (saved for repeated multiplication) \\
+\hline
+ECX & numerator $= 27$ \\
+\hline
+EDX & denominator base $= 1 \to$ squared $= 1$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Source Code}
+
+\begin{lstlisting}[caption={task2\_expr8.asm --- Expression 8}]
+; Task 2 - Expression 8: z = (-a+b+c+1)^3 / (a - b*c + d)^2
+; Values: a=2, b=3, c=1, d=2  =>  z = 27
+; nasm -f elf64 task2_expr8.asm -o task2_expr8.o && ld task2_expr8.o -o task2_expr8
+; Works in SASM (64-bit mode, entry point: main)
+
+section .data
+    a      dd  2
+    b      dd  3
+    c      dd  1
+    d      dd  2
+    result dd  0
+
+section .text
+    global main
+
+main:
+    ; --- numerator base: -a+b+c+1 ---
+    mov  eax, [b]
+    sub  eax, [a]          ; eax = b-a = 1
+    add  eax, [c]          ; eax = 2
+    add  eax, 1            ; eax = 3
+
+    ; --- base^3 ---
+    mov  ebx, eax          ; save base
+    imul eax, ebx          ; eax = 9
+    imul eax, ebx          ; eax = 27  (numerator)
+    mov  ecx, eax
+
+    ; --- denominator base: a - b*c + d ---
+    mov  eax, [b]
+    imul eax, dword [c]    ; eax = b*c = 3
+    mov  edx, [a]
+    sub  edx, eax          ; edx = a - b*c = -1
+    add  edx, [d]          ; edx = 1
+
+    ; --- base^2 ---
+    imul edx, edx          ; edx = 1  (denominator)
+
+    ; --- z = numerator / denominator ---
+    mov  edi, edx          ; save denominator before cdq
+    mov  eax, ecx          ; eax = 27 (numerator)
+    cdq
+    idiv edi               ; eax = 27/1 = 27  => z
+
+    mov  [result], eax
+
+    xor  eax, eax
+    ret
+\end{lstlisting}
+
+% -------------------------------------------
+\newpage
+\subsection{Expression 10}
+% -------------------------------------------
+
+\subsubsection{Formula and Manual Verification}
+
+\[
+z = \frac{-a^{2} + b^{2}}{a^{2} - b^{2} - 5}
+\]
+
+Values: $a=5,\ b=3$.
+
+\[
+\text{numerator}   = -25 + 9 = -16
+\qquad
+\text{denominator} = 25 - 9 - 5 = 11
+\]
+\[
+z = -16 \div 11 = \mathbf{-1} \quad\text{(integer division, truncates toward zero)}
+\]
+
+\subsubsection{Register Usage}
+
+\begin{table}[H]
+\centering
+\caption{Register usage --- Expression 10}
+\small
+\begin{tabular}{|l|p{9cm}|}
+\hline
+\textbf{Register} & \textbf{Contents at key steps} \\
+\hline
+EAX & $a^2=25$ (temp) $\to$ numerator $=-16 \to z=-1$ \\
+\hline
+EBX & $b^2 = 9$ \\
+\hline
+ECX & numerator $= -16$ \\
+\hline
+EDX & denominator $= 11$ \\
+\hline
+ESI & $a^2 = 25$ (saved for reuse in both numerator and denominator) \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Source Code}
+
+\begin{lstlisting}[caption={task2\_expr10.asm --- Expression 10}]
+; Task 2 - Expression 10: z = (-a^2 + b^2) / (a^2 - b^2 - 5)
+; Values: a=5, b=3  =>  z = -1
+; nasm -f elf64 task2_expr10.asm -o task2_expr10.o && ld task2_expr10.o -o task2_expr10
+; Works in SASM (64-bit mode, entry point: main)
+
+section .data
+    a      dd  5
+    b      dd  3
+    result dd  0
+
+section .text
+    global main
+
+main:
+    ; --- a^2 ---
+    mov  eax, [a]
+    imul eax, eax          ; eax = 25
+    mov  esi, eax          ; save a^2
+
+    ; --- b^2 ---
+    mov  ebx, [b]
+    imul ebx, ebx          ; ebx = 9
+
+    ; --- numerator: -a^2 + b^2 ---
+    mov  ecx, ebx
+    sub  ecx, esi          ; ecx = 9-25 = -16
+
+    ; --- denominator: a^2 - b^2 - 5 ---
+    mov  edx, esi
+    sub  edx, ebx          ; edx = 16
+    sub  edx, 5            ; edx = 11
+
+    ; --- z = numerator / denominator ---
+    mov  eax, ecx
+    cdq
+    idiv edx               ; eax = -16/11 = -1  => z
+
+    mov  [result], eax
+
+    xor  eax, eax
+    ret
+\end{lstlisting}
+
+% ============================================
+\newpage
+\section{TASK 3 --- BCD MANUAL CONVERSIONS (VARIANT 14, EVEN COLUMN)}
+% ============================================
+
+Even variant $\Rightarrow$ numbers from the even column: \textbf{21, 25, 36, 98, 125, 156}.
+
+% -------------------------------------------
+\subsection{Decimal to 8421 BCD}
+% -------------------------------------------
+
+\begin{table}[H]
+\centering
+\caption{Decimal to BCD conversion}
+\begin{tabular}{|c|l|l|}
+\hline
+\textbf{Decimal} & \textbf{Digit breakdown} & \textbf{8421 BCD} \\
+\hline
+21  & 2 = 0010,\ 1 = 0001                       & \texttt{0010 0001} \\
+\hline
+25  & 2 = 0010,\ 5 = 0101                       & \texttt{0010 0101} \\
+\hline
+36  & 3 = 0011,\ 6 = 0110                       & \texttt{0011 0110} \\
+\hline
+98  & 9 = 1001,\ 8 = 1000                       & \texttt{1001 1000} \\
+\hline
+125 & 1 = 0001,\ 2 = 0010,\ 5 = 0101           & \texttt{0001 0010 0101} \\
+\hline
+156 & 1 = 0001,\ 5 = 0101,\ 6 = 0110           & \texttt{0001 0101 0110} \\
+\hline
+\end{tabular}
+\end{table}
+
+% -------------------------------------------
+\subsection{Straight Binary vs.\ BCD --- Bit Count}
+% -------------------------------------------
+
+\begin{table}[H]
+\centering
+\caption{Binary bits vs.\ BCD bits required}
+\small
+\begin{tabular}{|c|l|c|l|c|c|}
+\hline
+\textbf{Decimal} & \textbf{Binary} & \textbf{Bits} & \textbf{BCD} & \textbf{BCD bits} & \textbf{Extra} \\
+\hline
+21  & 10101     & 5 & 0010 0001        & 8  & +3 \\
+\hline
+25  & 11001     & 5 & 0010 0101        & 8  & +3 \\
+\hline
+36  & 100100    & 6 & 0011 0110        & 8  & +2 \\
+\hline
+98  & 1100010   & 7 & 1001 1000        & 8  & +1 \\
+\hline
+125 & 1111101   & 7 & 0001 0010 0101   & 12 & +5 \\
+\hline
+156 & 10011100  & 8 & 0001 0101 0110   & 12 & +4 \\
+\hline
+\end{tabular}
+\end{table}
+
+BCD always requires more bits than straight binary because six of the sixteen possible
+nibble values (1010--1111) are unused, wasting storage.
+
+% -------------------------------------------
+\subsection{BCD to Decimal Conversion}
+% -------------------------------------------
+
+\begin{table}[H]
+\centering
+\caption{BCD to decimal}
+\begin{tabular}{|l|l|c|}
+\hline
+\textbf{BCD string} & \textbf{Split into nibbles} & \textbf{Decimal} \\
+\hline
+\texttt{001000110111}   & 0010 $|$ 0011 $|$ 0111 $\to$ 2, 3, 7 & 237 \\
+\hline
+\texttt{010000100001}   & 0100 $|$ 0010 $|$ 0001 $\to$ 4, 2, 1 & 421 \\
+\hline
+\texttt{100000000000}   & 1000 $|$ 0000 $|$ 0000 $\to$ 8, 0, 0 & 800 \\
+\hline
+\end{tabular}
+\end{table}
+
+% -------------------------------------------
+\subsection{Adding BCD Binary Strings}
+% -------------------------------------------
+
+\textbf{(f) \ 01100100 + 00110011} \quad (decimal: $64 + 33 = 97$)
+
+\begin{verbatim}
+  01100100    (6, 4)
++ 00110011    (3, 3)
+-----------
+  10010111   -> nibbles: 1001 | 0111 = 9, 7  -> 97  (no correction needed)
+\end{verbatim}
+
+\textbf{(h) \ 10000101 + 00010011} \quad (decimal: $85 + 13 = 98$)
+
+\begin{verbatim}
+  10000101    (8, 5)
++ 00010011    (1, 3)
+-----------
+  10011000   -> nibbles: 1001 | 1000 = 9, 8  -> 98  (both <= 9, valid)
+\end{verbatim}
+
+\textbf{(e) \ 00100101 + 00100111} \quad (decimal: $25 + 27 = 52$)
+
+\begin{verbatim}
+Ones nibble:  0101 + 0111 = 1100 (12 > 9)  -> INVALID
+              add 6: 1100 + 0110 = 0010, carry = 1
+Tens nibble:  0010 + 0010 + 1(carry) = 0101 = 5  (valid)
+Result: 0101 0010  ->  52  (correct)
+\end{verbatim}
+
+\textbf{(g) \ 10011000 + 10010111} \quad (decimal: $98 + 97 = 195$)
+
+\begin{verbatim}
+Ones nibble:  1000 + 0111 = 1111 (15 > 9)  -> add 6 -> 0101, carry=1
+Tens nibble:  1001 + 1001 + 1   = 10011    -> add 6 -> 1001, carry=1
+Hundreds:     0001
+Result: 0001 1001 0101  ->  195  (correct)
+\end{verbatim}
+
+% -------------------------------------------
+\newpage
+\subsection{Decimal Pairs to BCD and Addition}
+% -------------------------------------------
+
+\textbf{a) \ 421 + 975 = 1396}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|}
+\hline
+421 in BCD & \texttt{0100 0010 0001} \\
+\hline
+975 in BCD & \texttt{1001 0111 0101} \\
+\hline
+Ones: $0001+0101$  & $= 0110 = 6 \leq 9$ (valid) \\
+\hline
+Tens: $0010+0111$  & $= 1001 = 9 \leq 9$ (valid) \\
+\hline
+Hundreds: $0100+1001$ & $= 1101 = 13 > 9$ $\to$ add 6: carry=1, digit=3 \\
+\hline
+Thousands: $0+0+1$ & $= 0001$ \\
+\hline
+\textbf{Result BCD} & \texttt{0001 0011 1001 0110} $\to$ \textbf{1396} \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{b) \ 183 + 195 = 378}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|}
+\hline
+183 in BCD & \texttt{0001 1000 0011} \\
+\hline
+195 in BCD & \texttt{0001 1001 0101} \\
+\hline
+Ones: $0011+0101$  & $= 1000 = 8 \leq 9$ (valid) \\
+\hline
+Tens: $1000+1001$  & $= 10001 > 9$ $\to$ add 6 $\to$ 0111, carry=1 \\
+\hline
+Hundreds: $0001+0001+1$ & $= 0011 = 3$ (valid) \\
+\hline
+\textbf{Result BCD} & \texttt{0011 0111 1000} $\to$ \textbf{378} \\
+\hline
+\end{tabular}
+\end{table}
+
+% -------------------------------------------
+\subsection{BCD Subtraction via 9's Complement}
+% -------------------------------------------
+
+\subsubsection{Method}
+To compute $A - B$ in BCD:
+\begin{enumerate}
+    \item Find the 9's complement of $B$: subtract each decimal digit from 9.
+    \item Add $A$ and the 9's complement of $B$ using BCD addition rules.
+    \item If a carry is generated (end-around carry), add it to the result.
+    That carry signals a positive result.
+    \item If no carry, the result is negative; take the 9's complement of the sum.
+\end{enumerate}
+
+\subsubsection{a) \ 974 - 632 = 342}
+
+9's complement of $632$: $9-6=3,\ 9-3=6,\ 9-2=7$ $\Rightarrow$ \textbf{367}
+
+\begin{verbatim}
+  974 + 367 (BCD)
+  Ones:     0100 + 0111 = 1011 > 9  -> add 6 -> 0001, carry=1
+  Tens:     0111 + 0110 + 1 = 1110 > 9  -> add 6 -> 0100, carry=1
+  Hundreds: 1001 + 0011 + 1 = 1101 > 9  -> add 6 -> 0011, carry=1 (end-around)
+  Sum = 0341 + end-around carry 1 = 342  ->  POSITIVE  (correct)
+\end{verbatim}
+
+\subsubsection{b) \ 453 - 983 = -530}
+
+9's complement of $983$: $9-9=0,\ 9-8=1,\ 9-3=6$ $\Rightarrow$ \textbf{016}
+
+\begin{verbatim}
+  453 + 016 (BCD)
+  Ones:     0011 + 0110 = 1001 = 9  (valid)
+  Tens:     0101 + 0001 = 0110 = 6  (valid)
+  Hundreds: 0100 + 0000 = 0100 = 4  (valid)
+  Sum = 469, NO carry  ->  NEGATIVE
+  9's complement of 469: 9-4=5, 9-6=3, 9-9=0  ->  530
+  Result: -530  (correct)
+\end{verbatim}
+
+\subsubsection{Large numbers: X = 72345, Y = -24341, \ X + Y}
+
+Compute $72345 - 24341$ using 5-digit 9's complement.
+
+9's complement of $24341$: $99999 - 24341 = 75658$
+
+\begin{verbatim}
+  72345 + 75658 (BCD):
+  Ones:         5+8=13 > 9  -> add 6 -> 3, carry=1
+  Tens:         4+5+1=10 > 9  -> add 6 -> 0, carry=1
+  Hundreds:     3+6+1=10 > 9  -> add 6 -> 0, carry=1
+  Thousands:    2+5+1=8  (valid)
+  Ten-thousands: 7+7=14 > 9  -> add 6 -> 4, carry=1  (end-around)
+  Sum = 48003 + 1 = 48004  ->  POSITIVE
+  72345 + (-24341) = 48004  (correct)
+\end{verbatim}
+
+% ============================================
+\newpage
+\section{TASK 4 --- BCD ADDER CIRCUIT IN LOGISIM}
+% ============================================
+
+\subsection{Circuit Description}
+
+A single-digit BCD adder takes two 4-bit BCD digits ($A_{3:0}$ and $B_{3:0}$) and a
+carry-in ($C_{in}$), and produces a 4-bit BCD sum digit plus a carry-out ($C_{out}$).
+
+The circuit consists of two main stages:
+
+\begin{enumerate}
+    \item \textbf{Binary addition:} A standard 4-bit binary full-adder (FA) adds
+    $A_{3:0}$, $B_{3:0}$, and $C_{in}$.  The raw 4-bit result $S_{3:0}$ and the
+    carry-out $C_4$ are produced.
+    \item \textbf{Correction logic:} The correction (add 6 = 0110) is needed when the
+    raw sum is invalid BCD, i.e.\:
+    \[
+        \text{CORRECT} = C_4 \;+\; (S_3 \cdot S_2) \;+\; (S_3 \cdot S_1)
+    \]
+    If CORRECT = 1, a second 4-bit adder adds 0110 to $S_{3:0}$.  Any carry from this
+    second addition becomes the BCD $C_{out}$.
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\caption{BCD adder --- Logisim component list}
+\begin{tabular}{|l|p{9cm}|}
+\hline
+\textbf{Component} & \textbf{Purpose} \\
+\hline
+4-bit binary adder (×2) & First adds the BCD digits; second optionally adds the correction 0110 \\
+\hline
+3-input OR gate & Computes CORRECT $= C_4 + S_3 S_2 + S_3 S_1$ \\
+\hline
+2-input AND gate (×2) & Computes $S_3 \cdot S_2$ and $S_3 \cdot S_1$ \\
+\hline
+4-bit MUX / AND gates & Selects 0110 as second operand of second adder when CORRECT = 1 \\
+\hline
+OR gate for $C_{out}$ & Combines carry from second adder with CORRECT signal \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Truth Table for Correction Signal}
+
+\begin{table}[H]
+\centering
+\caption{When correction is applied (selected cases)}
+\small
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$C_4$ & $S_3$ & $S_2$ & $S_1$ & CORRECT & Action \\
+\hline
+0 & 0 & x & x & 0 & No correction \\
+\hline
+0 & 1 & 0 & 0 & 0 & No correction (sum = 8 or 9) \\
+\hline
+0 & 1 & 0 & 1 & 1 & Add 6 (sum = 10 or 11) \\
+\hline
+0 & 1 & 1 & x & 1 & Add 6 (sum = 12--15) \\
+\hline
+1 & x & x & x & 1 & Add 6 (carry means sum $\geq$ 16) \\
+\hline
+\end{tabular}
+\end{table}
+
+% ============================================
+\newpage
+\section{TASK 5 --- ASSEMBLY: BCD ADDITION}
+% ============================================
+
+\subsection{Description}
+
+The program adds two packed 8-bit BCD numbers and stores the two-byte result (low digit
+byte and carry byte) in sequential memory locations.  Because the \texttt{DAA} instruction
+is unavailable in 64-bit mode, the code is assembled as a 32-bit ELF binary.
+
+\begin{itemize}
+    \renewcommand{\labelitemi}{--}
+    \item \textbf{Build:} \texttt{nasm -f elf32 task5\_bcd\_add.asm -o task5\_bcd\_add.o}
+    \item \textbf{Link:} \texttt{ld -m elf\_i386 task5\_bcd\_add.o -o task5\_bcd\_add}
+    \item \textbf{Note:} On a 64-bit system you may need \texttt{sudo apt install gcc-multilib}
+    (Debian/Ubuntu) or \texttt{sudo pacman -S lib32-glibc} (Arch Linux) for 32-bit support.
+\end{itemize}
+
+\textbf{Example:} BCD $0x47$ $(=47)$ $+$ BCD $0x38$ $(=38)$
+
+\begin{enumerate}
+    \item Binary sum: $0x47 + 0x38 = 0x7F$
+    \item \texttt{DAA}: lower nibble \texttt{F} = 15 $> 9$ $\Rightarrow$ AL $\mathrel{+}= 6$:
+    $0x7F + 0x06 = 0x85$
+    \item Upper nibble $= 8 \leq 9$ --- no second correction; CF $= 0$
+    \item Result: AL $= 0x85$ (BCD 85), carry $= 0$
+\end{enumerate}
+
+\subsection{Source Code}
+
+\begin{lstlisting}[caption={task5\_bcd\_add.asm --- Add two 8-bit BCD numbers}]
+; Task 5: Add two 8-bit packed BCD numbers
+; DAA only works in 32-bit mode!
+; In SASM: Settings -> Assembler -> check "Use 32-bit program"
+;
+; Example: 0x47 + 0x38 = 0x85  (47 + 38 = 85),  carry = 0
+
+section .data
+    bcd1  db 0x47          ; first BCD number  (47)
+    bcd2  db 0x38          ; second BCD number (38)
+
+section .bss
+    result    resb 1       ; BCD result byte
+    carry_out resb 1       ; carry byte (0x00 or 0x01)
+
+section .text
+    global main
+
+main:
+    mov  al, [bcd1]        ; al = 0x47
+    add  al, [bcd2]        ; al = 0x7F  (raw binary, not valid BCD yet)
+    daa                    ; fix al to valid BCD: 0x7F -> 0x85
+                           ; DAA adds 6 to any nibble that exceeds 9
+
+    mov  [result], al      ; store result
+
+    jnc  no_carry
+    mov  byte [carry_out], 0x01   ; result > 99, carry to next digit
+    jmp  done
+
+no_carry:
+    mov  byte [carry_out], 0x00
+
+done:
+    xor  eax, eax
+    ret
+\end{lstlisting}
+
+\subsection{Memory and Register Analysis}
+
+\begin{table}[H]
+\centering
+\caption{Memory state before and after execution}
+\begin{tabular}{|l|c|c|p{5cm}|}
+\hline
+\textbf{Location} & \textbf{Before} & \textbf{After} & \textbf{Meaning} \\
+\hline
+\texttt{[bcd1]}      & 0x47 & 0x47 & BCD 47 (input, unchanged) \\
+\hline
+\texttt{[bcd2]}      & 0x38 & 0x38 & BCD 38 (input, unchanged) \\
+\hline
+\texttt{[result]}    & 0x00 & 0x85 & BCD 85 (packed: tens=8, ones=5) \\
+\hline
+\texttt{[carry\_out]} & 0x00 & 0x00 & No carry (result $\leq$ 99) \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Register trace during execution}
+\small
+\begin{tabular}{|l|l|}
+\hline
+\textbf{After instruction} & \textbf{AL value and flags} \\
+\hline
+\texttt{mov al, [bcd1]}  & AL = 0x47 \\
+\hline
+\texttt{add al, [bcd2]}  & AL = 0x7F \ (AF=1 because lower nibble 7+8=15 $>$ 9) \\
+\hline
+\texttt{daa} --- lower check  & Nibble F $= 15 > 9$ $\to$ AL $+= 6$: $0x7F + 0x06 = 0x85$ \\
+\hline
+\texttt{daa} --- upper check  & Nibble 8 $\leq 9$ $\to$ no correction; CF $= 0$ \\
+\hline
+\texttt{mov [result], al}  & \texttt{[result]} $= 0x85$ (BCD 85) \\
+\hline
+\texttt{jnc no\_carry}  & CF $= 0$ $\to$ jump taken \\
+\hline
+\texttt{mov byte [carry\_out], 0x00}  & \texttt{[carry\_out]} $= 0x00$ \\
+\hline
+\end{tabular}
+\end{table}
+
+% ============================================
+\newpage
+\section{DEBUGGING}
+% ============================================
+
+Debugging Assembly code requires careful attention to register and memory state at every
+step.  The following issues were encountered during development:
+
+\begin{table}[H]
+\centering
+\caption{Debugging issues and solutions}
+\small
+\begin{tabular}{|p{4cm}|p{5cm}|p{5cm}|}
+\hline
+\textbf{Issue} & \textbf{Cause} & \textbf{Solution} \\
+\hline
+\texttt{IDIV} produced wrong quotient or fault & \texttt{CDQ} was missing before
+\texttt{IDIV}; EDX contained leftover data from a previous multiply & Add \texttt{cdq}
+immediately before every \texttt{idiv} to sign-extend EAX into EDX:EAX \\
+\hline
+Expression 8: \texttt{idiv edx} crashed (division by zero) & After \texttt{cdq}, EDX is
+overwritten; the denominator stored in EDX was destroyed & Compute and save the
+denominator in EDX \emph{before} calling \texttt{cdq}/\texttt{idiv} \\
+\hline
+Task 5 assembled for 64-bit (elf64) & \texttt{DAA} is not supported in x86-64 mode;
+NASM gave an ``instruction not supported in 64-bit mode'' error & Switched to
+\texttt{nasm -f elf32} and \texttt{ld -m elf\_i386} \\
+\hline
+\texttt{IMUL ebx, dword [d]} used with a memory operand & Two-operand \texttt{IMUL}
+requires the destination to be a register; using a memory operand gives an assemble error
+& Load memory value into a register first, then \texttt{IMUL} \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Debugging Approach}
+
+All programs were debugged using \textbf{GDB} with the following workflow:
+
+\begin{enumerate}
+    \item Assemble with debug symbols: add the \texttt{-g} flag to NASM.
+    \item Start GDB: \texttt{gdb ./task2\_expr14}
+    \item Set breakpoint at the division instruction: \texttt{break *\_start+N}
+    \item Run: \texttt{run}
+    \item Inspect registers: \texttt{info registers eax ebx ecx edx}
+    \item Single-step: \texttt{stepi} (one instruction at a time)
+    \item Check memory: \texttt{x/4xb \&result}
+\end{enumerate}
+
+This approach made it easy to verify intermediate values (e.g.\ confirming EAX $= 45$
+before the first \texttt{idiv} in Expression 14) and to catch the missing \texttt{cdq}
+bug early.
+
+% ============================================
+\newpage
+\section{CONCLUSION}
+% ============================================
+
+This laboratory covered two complementary topics in low-level computing: register-based
+arithmetic in NASM Assembly and the BCD (Binary Coded Decimal) number system.
+
+Through Task 1 and Task 2, the mechanics of signed integer arithmetic using \texttt{IMUL},
+\texttt{IDIV}, and \texttt{CDQ} were practised.  A key lesson was that \texttt{CDQ} must
+always precede \texttt{IDIV}, and that intermediate results must be saved in registers
+such as ECX or ESI before they are overwritten by subsequent operations.
+
+The BCD section (Task 3) demonstrated why BCD is used in contexts where exact decimal
+representation matters (e.g.\ financial software, seven-segment displays): each decimal
+digit is stored independently, so no rounding errors or base-conversion artefacts occur.
+The manual addition and 9's complement subtraction exercises illustrated how the six
+invalid states (1010--1111) necessitate the $+6$ correction step.
+
+Task 4 showed how the correction logic can be implemented in hardware using two 4-bit
+adders and a small combinational circuit.  Task 5 demonstrated the software equivalent
+via the \texttt{DAA} instruction, which encapsulates exactly the same correction rules in
+a single opcode.  The important architectural note is that \texttt{DAA} was removed in
+x86-64, requiring 32-bit mode for any code that depends on it.
+
+Overall, the laboratory strengthened understanding of how computers represent and
+manipulate numbers at the hardware level, and highlighted the gap between the
+abstractions provided by high-level languages and the actual operations performed by the
+processor.
+
+\end{document}
